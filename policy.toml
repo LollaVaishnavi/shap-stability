@@ -1,0 +1,42 @@
+# Policy for the stability verdict. Every value here is a decision, not a default
+# copied from a tutorial, so each carries the reason it has this number.
+
+[resample]
+# How many bootstrap refits form the distribution. 500 gives a dominance
+# resolution floor of about 1/sqrt(500) = 0.044, which is tight enough to call a
+# 0.10 gap and cheap enough to run in CI in seconds. Raise it to resolve smaller
+# gaps; the floor is reported next to every verdict so the cost is visible.
+n_resamples = 500
+
+# Base seed for the bootstrap stream. Resample b draws its rows with seed
+# base_seed + b, so the whole run is one function of this integer.
+base_seed = 20260601
+
+[ranking]
+# The ranking is only judged down to this depth. A reviewer cares whether the
+# top features are trustworthy, not whether rank 40 and rank 41 are stable.
+top_k = 10
+
+# A rank boundary (feature at rank r versus the feature at rank r+1) counts as
+# resolved only if the two-sided Wilson interval on the dominance probability
+# excludes 0.5 at this confidence. 0.95 matches the interval reported for the gap.
+confidence = 0.95
+
+# A dominance point estimate inside this band around 0.5 is treated as a genuine
+# tie (UNSTABLE), not as something more resamples would resolve (INCONCLUSIVE).
+# 0.5 +/- 0.02: a gap this small is below the floor of any practical resample budget.
+tie_band = 0.02
+
+# The higher feature must win at least this often for its rank to count as reliable.
+# This is the threshold that separates statistical significance from practical trust:
+# an adjacent dominance of 0.55 can be significantly above 0.5 yet still means the
+# order flips almost half the time. A boundary that clears 0.5 but not this value is
+# reported as "weak" and makes the ranking UNSTABLE, because a 55/45 order is not one
+# a reader should rely on. 0.90: the higher feature wins at least nine times in ten.
+reliable_dominance = 0.90
+
+[model]
+# Ridge penalty on standardised features. A small positive value keeps the fit
+# defined when a bootstrap sample makes two columns collinear, which is exactly
+# the regime this tool is built to probe. 1.0 is weak on standardised data.
+ridge_alpha = 1.0

@@ -1,0 +1,20 @@
+# Byte artefacts, caches and regenerable heavy outputs. The committed evidence
+# (docs/diagrams, docs/screenshots, docs/video, docs/experiments, docs/metrics.json)
+# is intentionally tracked so a reviewer sees it without a toolchain.
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+coverage.json
+junit.xml
+reports/
+node_modules/
+*.webm
+.venv/
+venv/
