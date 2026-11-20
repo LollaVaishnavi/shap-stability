@@ -32,6 +32,17 @@ def extract_source() -> str:
     return match.group(1).strip() + "\n"
 
 
+def preserve_label_whitespace(svg: str) -> str:
+    """Keep the spaces between words in multi-word labels.
+
+    With htmlLabels off, mermaid splits a label into one tspan per word and carries the
+    space as a leading space on each tspan. SVG collapses leading whitespace unless told
+    not to, so without this a renderer shows "datasetorCSV". Marking every text element
+    xml:space="preserve" keeps the spaces in every renderer, browser and rasteriser alike.
+    """
+    return re.sub(r"<text(?![\w-])", '<text xml:space="preserve"', svg)
+
+
 def set_intrinsic_dimensions(svg: str) -> str:
     """Replace width="100%" with explicit pixel width and height taken from the viewBox."""
     viewbox = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', svg)
@@ -73,6 +84,7 @@ def main() -> int:
 
     if "foreignObject" in svg:
         raise SystemExit("SVG contains foreignObject: htmlLabels were not turned off")
+    svg = preserve_label_whitespace(svg)
     svg = set_intrinsic_dimensions(svg)
     OUT.write_text(svg, encoding="utf-8")
 
