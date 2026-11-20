@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 from pathlib import Path
 
 import numpy as np
@@ -11,6 +12,13 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 POLICY = str(REPO_ROOT / "policy.toml")
 
 
+def _write_csv(path: Path, header: list[str], rows: list[list[float]]) -> None:
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow(header)
+        writer.writerows(rows)
+
+
 def _write_stable_csv(path: Path, seed: int = 0) -> None:
     # Independent features with clearly separated coefficients: a ranking that should hold.
     rng = np.random.default_rng(seed)
@@ -19,9 +27,8 @@ def _write_stable_csv(path: Path, seed: int = 0) -> None:
     b = rng.standard_normal(n)
     c = rng.standard_normal(n)
     y = 4.0 * a + 2.5 * b + 1.0 * c + 0.3 * rng.standard_normal(n)
-    import pandas as pd
-
-    pd.DataFrame({"a": a, "b": b, "c": c, "target": y}).to_csv(path, index=False)
+    rows = [[a[i], b[i], c[i], y[i]] for i in range(n)]
+    _write_csv(path, ["a", "b", "c", "target"], rows)
 
 
 def test_the_default_dataset_is_reported_unstable(capsys):
@@ -60,12 +67,48 @@ def test_an_unknown_target_column_is_a_usage_error(tmp_path: Path):
 
 
 def test_a_csv_with_no_feature_columns_is_a_usage_error(tmp_path: Path):
-    csv = tmp_path / "only_target.csv"
-    import pandas as pd
-
-    pd.DataFrame({"target": [1.0, 2.0, 3.0]}).to_csv(csv, index=False)
-    code = cli.main(["--policy", POLICY, "--csv", str(csv), "--target", "target"])
+    path = tmp_path / "only_target.csv"
+    _write_csv(path, ["target"], [[1.0], [2.0], [3.0]])
+    code = cli.main(["--policy", POLICY, "--csv", str(path), "--target", "target"])
     assert code == cli.EXIT_USAGE
+
+
+def test_a_non_numeric_cell_is_a_usage_error(tmp_path: Path, capsys):
+    path = tmp_path / "bad.csv"
+    path.write_text("a,b,target\n1,2,3\n1,oops,3\n", encoding="utf-8")
+    code = cli.main(["--policy", POLICY, "--csv", str(path), "--target", "target"])
+    assert code == cli.EXIT_USAGE
+    assert "non-numeric" in capsys.readouterr().err
+
+
+def test_an_empty_csv_is_a_usage_error(tmp_path: Path):
+    path = tmp_path / "empty.csv"
+    path.write_text("", encoding="utf-8")
+    code = cli.main(["--policy", POLICY, "--csv", str(path), "--target", "target"])
+    assert code == cli.EXIT_USAGE
+
+
+def test_a_header_only_csv_is_a_usage_error(tmp_path: Path):
+    path = tmp_path / "headeronly.csv"
+    _write_csv(path, ["a", "b", "target"], [])
+    code = cli.main(["--policy", POLICY, "--csv", str(path), "--target", "target"])
+    assert code == cli.EXIT_USAGE
+
+
+def test_blank_lines_in_a_csv_are_tolerated(tmp_path: Path):
+    path = tmp_path / "blanks.csv"
+    rng = np.random.default_rng(0)
+    n = 1500
+    a, b, c = (rng.standard_normal(n) for _ in range(3))
+    y = 4.0 * a + 2.5 * b + 1.0 * c + 0.3 * rng.standard_normal(n)
+    lines = ["a,b,c,target"]
+    for i in range(n):
+        lines.append(f"{a[i]},{b[i]},{c[i]},{y[i]}")
+        if i == 10:
+            lines.append("")  # a stray blank line
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    code = cli.main(["--policy", POLICY, "--csv", str(path), "--target", "target"])
+    assert code == cli.EXIT_STABLE
 
 
 def test_a_bad_policy_file_is_a_usage_error(tmp_path: Path, capsys):

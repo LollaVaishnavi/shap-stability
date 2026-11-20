@@ -6,7 +6,7 @@
 ![license](https://img.shields.io/badge/license-MIT-green)
 ![lint](https://img.shields.io/badge/lint-ruff-informational)
 ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
-![tests](https://img.shields.io/badge/tests-111-brightgreen)
+![tests](https://img.shields.io/badge/tests-115-brightgreen)
 
 ## The impossibility
 
@@ -41,7 +41,7 @@ ranking that resampling then contradicts:
   resamples**.
 
 The verdict is **UNSTABLE**. The point is not that the tool failed; it is that the ranking
-a reader would have trusted is not reproducible. The suite is **111 tests** at **100% line
+a reader would have trusted is not reproducible. The suite is **115 tests** at **100% line
 coverage**, and every number in this document is re-measured by `tools/collect_metrics.py`
 and verified against this prose by `tools/check_numbers.py` in CI.
 

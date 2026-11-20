@@ -94,7 +94,7 @@
     "resolution_floor": 0.045,
     "set_topk_prob_pct": 61.2,
     "stable_rank_count": 2,
-    "tests_total": 111,
+    "tests_total": 115,
     "top_k": 10,
     "trio_width_high_rho": 3.33,
     "trio_width_low_rho": 1.67,

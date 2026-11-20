@@ -31,17 +31,42 @@ _VERDICT_EXIT = {STABLE: EXIT_STABLE, UNSTABLE: EXIT_UNSTABLE, INCONCLUSIVE: EXI
 
 
 def _load_csv(path: Path, target: str) -> tuple[np.ndarray, np.ndarray, tuple[str, ...]]:
-    import pandas as pd
+    """Read a numeric CSV with the standard library, so there is no pandas at runtime.
 
-    frame = pd.read_csv(path)
-    if target not in frame.columns:
-        raise ModelError(f"target column {target!r} not found in {path}")
-    feature_cols = [c for c in frame.columns if c != target]
-    if not feature_cols:
-        raise ModelError("the CSV has no feature columns besides the target")
-    x = frame[feature_cols].to_numpy(dtype=np.float64)
-    y = frame[target].to_numpy(dtype=np.float64)
-    return x, y, tuple(feature_cols)
+    The header names the columns; one is the target and the rest are features. Every cell is
+    parsed as a float, and a non-numeric cell is reported with its column rather than left to
+    fail deep in the fit.
+    """
+    import csv
+
+    with path.open(newline="", encoding="utf-8") as handle:
+        reader = csv.reader(handle)
+        try:
+            header = next(reader)
+        except StopIteration:
+            raise ModelError(f"{path} is empty") from None
+        if target not in header:
+            raise ModelError(f"target column {target!r} not found in {path}")
+        target_idx = header.index(target)
+        feature_cols = [c for i, c in enumerate(header) if i != target_idx]
+        if not feature_cols:
+            raise ModelError("the CSV has no feature columns besides the target")
+
+        xs: list[list[float]] = []
+        ys: list[float] = []
+        for lineno, row in enumerate(reader, start=2):
+            if not row:
+                continue
+            try:
+                values = [float(cell) for cell in row]
+            except ValueError as exc:
+                raise ModelError(f"non-numeric value in {path} at line {lineno}") from exc
+            ys.append(values[target_idx])
+            xs.append([v for i, v in enumerate(values) if i != target_idx])
+
+    if not xs:
+        raise ModelError(f"{path} has a header but no data rows")
+    return np.asarray(xs, dtype=np.float64), np.asarray(ys, dtype=np.float64), tuple(feature_cols)
 
 
 def _build_parser() -> argparse.ArgumentParser:
