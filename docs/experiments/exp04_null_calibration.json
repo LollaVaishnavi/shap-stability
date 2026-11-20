@@ -1,0 +1,9 @@
+{
+  "ci_brackets_half": true,
+  "n_datasets": 300,
+  "n_probe_datasets": 40,
+  "single_fit_f0_wins_rate": 0.5166666666666667,
+  "wins_ci_high": 0.5726455871664101,
+  "wins_ci_low": 0.4602663137927717,
+  "within_dataset_confident_rate": 0.175
+}

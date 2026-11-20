@@ -1,0 +1,32 @@
+{
+  "n_resamples": 500,
+  "series": [
+    {
+      "tail_mean_span": 1.8333333333333333,
+      "trio_mean_span": 1.6666666666666667,
+      "trio_rho": 0.0
+    },
+    {
+      "tail_mean_span": 1.8333333333333333,
+      "trio_mean_span": 2.0,
+      "trio_rho": 0.3
+    },
+    {
+      "tail_mean_span": 1.8333333333333333,
+      "trio_mean_span": 3.0,
+      "trio_rho": 0.6
+    },
+    {
+      "tail_mean_span": 1.8333333333333333,
+      "trio_mean_span": 3.0,
+      "trio_rho": 0.9
+    },
+    {
+      "tail_mean_span": 1.6666666666666667,
+      "trio_mean_span": 3.3333333333333335,
+      "trio_rho": 0.97
+    }
+  ],
+  "trio_span_high_rho": 3.3333333333333335,
+  "trio_span_low_rho": 1.6666666666666667
+}
