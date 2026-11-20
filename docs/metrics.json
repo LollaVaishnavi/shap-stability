@@ -1,0 +1,108 @@
+{
+  "anchors": {
+    "coverage_line_pct": [
+      "{}% line coverage",
+      "{} percent line coverage"
+    ],
+    "exact_topk_prob_pct": [
+      "{}% of resamples",
+      "recurs in {}%",
+      "in {}% of"
+    ],
+    "floor_at_1000": [
+      "{} at 1000",
+      "{} with 1000"
+    ],
+    "floor_at_50": [
+      "{} at 50",
+      "{} with 50"
+    ],
+    "n_resamples": [
+      "{} resamples",
+      "{} bootstrap"
+    ],
+    "null_single_fit_winner_pct": [
+      "{}% of",
+      "winner in {}%",
+      "{}% of the time"
+    ],
+    "null_within_confident_pct": [
+      "{}% of",
+      "in {}% of",
+      "{}% of those"
+    ],
+    "resamples_needed": [
+      "about {} resamples",
+      "{} resamples to"
+    ],
+    "resolution_floor": [
+      "floor of {}",
+      "floor is {}",
+      "floor {}"
+    ],
+    "set_topk_prob_pct": [
+      "set in {}%",
+      "same set in {}%",
+      "{}% of resamples"
+    ],
+    "stable_rank_count": [
+      "{} of the top",
+      "only {} keep",
+      "{} keep their exact"
+    ],
+    "tests_total": [
+      "{} tests"
+    ],
+    "top_k": [
+      "top {}",
+      "{} features by"
+    ],
+    "trio_width_high_rho": [
+      "to {} at",
+      "{} at the",
+      "to {} ranks"
+    ],
+    "trio_width_low_rho": [
+      "{} at no correlation",
+      "from {} ",
+      "{} ranks wide"
+    ],
+    "widest_rank_high": [
+      "to {}th",
+      "to {} across",
+      "to {} under"
+    ],
+    "widest_rank_low": [
+      "ranks {} to",
+      "from {}st",
+      "{} to "
+    ]
+  },
+  "checked_documents": [
+    "README.md",
+    "docs/adr/ADR-003-dominance-and-resolution-floor.md"
+  ],
+  "metrics": {
+    "coverage_line_pct": 100,
+    "exact_topk_prob_pct": 7.4,
+    "floor_at_1000": 0.032,
+    "floor_at_50": 0.141,
+    "n_resamples": 500,
+    "null_single_fit_winner_pct": 51.7,
+    "null_within_confident_pct": 18,
+    "resamples_needed": 831,
+    "resolution_floor": 0.045,
+    "set_topk_prob_pct": 61.2,
+    "stable_rank_count": 2,
+    "tests_total": 98,
+    "top_k": 10,
+    "trio_width_high_rho": 3.33,
+    "trio_width_low_rho": 1.67,
+    "verdict": "UNSTABLE",
+    "widest_feature": "x00",
+    "widest_rank_high": 6,
+    "widest_rank_low": 1,
+    "widest_single_fit_rank": 2
+  },
+  "note": "every value here is produced by running the suite and the four experiments"
+}
