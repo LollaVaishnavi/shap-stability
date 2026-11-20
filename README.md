@@ -50,16 +50,12 @@ and verified against this prose by `tools/check_numbers.py` in CI.
 Prerequisites: Python 3.11 or newer. No API keys, no network, no cloud.
 
 ```bash
-pip install -e .
+pip install -e .            # the shapstab CLI, numpy only
+shapstab                    # the headline verdict on the bundled dataset
+shapstab --html report.html --json report.json   # the report and its record
 
-# the headline verdict on the bundled dataset
-shapstab
-
-# write the HTML report and the machine-readable record
-shapstab --html report.html --json report.json
-
-# re-measure every published figure and check the prose against it
-make verify
+pip install -e ".[dev]"     # ruff and pytest, for the checks
+make verify                 # lint, test, then re-measure and check every figure
 ```
 
 `make verify` runs the linter, the test suite and the receipts, offline, from a fresh
