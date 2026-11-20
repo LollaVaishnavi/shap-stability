@@ -64,7 +64,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--rho",
         type=float,
-        help="override the synthetic collinear-block correlation (ignored with --csv)",
+        help="override the synthetic trio correlation (ignored with --csv)",
     )
     parser.add_argument(
         "--resamples", type=int, help="override policy n_resamples (useful for demos)"
@@ -108,7 +108,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             spec_kwargs: dict = {"seed": policy.base_seed}
             if args.rho is not None:
-                spec_kwargs["block_rho"] = args.rho
+                spec_kwargs["trio_rho"] = args.rho
             spec = DatasetSpec(**spec_kwargs)
             x, y = make_dataset(spec)
             names = spec.feature_names

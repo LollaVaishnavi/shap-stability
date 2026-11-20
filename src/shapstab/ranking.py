@@ -13,9 +13,9 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 
 import numpy as np
-from scipy.stats import norm
 
 from shapstab.resample import ImportanceSamples
+from shapstab.stats import normal_quantile
 
 # Verdict strings, also used as the CLI's spoken outcome.
 STABLE = "STABLE"
@@ -53,7 +53,7 @@ def wilson_interval(successes: int, n: int, confidence: float) -> tuple[float, f
         raise ValueError("successes must lie in [0, n]")
     if n <= 0:
         raise ValueError("n must be positive")
-    z = float(norm.ppf(1.0 - (1.0 - confidence) / 2.0))
+    z = normal_quantile(1.0 - (1.0 - confidence) / 2.0)
     phat = successes / n
     denom = 1.0 + z * z / n
     center = (phat + z * z / (2.0 * n)) / denom
@@ -180,7 +180,7 @@ def analyse_ranking(
     ranks = rank_matrix(imp.samples)
     single_ranks = rank_descending(imp.single_fit)
     names = imp.feature_names
-    z = float(norm.ppf(1.0 - (1.0 - confidence) / 2.0))
+    z = normal_quantile(1.0 - (1.0 - confidence) / 2.0)
 
     features = _feature_ranks(ranks, single_ranks, names, confidence)
 

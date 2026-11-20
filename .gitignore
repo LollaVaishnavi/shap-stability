@@ -18,3 +18,8 @@ node_modules/
 *.webm
 .venv/
 venv/
+
+# Regenerable evidence intermediates (the images, GIF, MP4 and manifests are tracked).
+docs/screenshots/report.html
+docs/video/demo.html
+docs/readme-preview.html
