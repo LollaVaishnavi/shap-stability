@@ -49,12 +49,16 @@ def fit_standardiser(x: np.ndarray) -> Standardiser:
 
 
 def fit_ridge(x_std: np.ndarray, y: np.ndarray, alpha: float) -> np.ndarray:
-    """Return ridge coefficients for standardised features via the normal equations.
+    """Return ridge coefficients with an intercept via the normal equations.
 
-    beta = (X^T X + alpha I)^-1 X^T y, solved with a Cholesky-based linear solve
-    rather than an explicit inverse. The intercept is handled by centring y, so the
-    penalty never touches a bias term. Exact and deterministic: no iterative solver,
-    no random state.
+    beta = (Xc^T Xc + alpha I)^-1 Xc^T yc, where both X and y are centred first, solved
+    with a linear solve rather than an explicit inverse. Centring X as well as y is what
+    keeps the intercept out of the penalised coefficients; it matches scikit-learn's
+    Ridge(fit_intercept=True) to machine precision. This matters here specifically
+    because every bootstrap resample has non-zero column means even when the full data is
+    centred, so a version that centred only y would fold each resample's mean offset into
+    the coefficients and add a confound to the very variance this tool is measuring.
+    Exact and deterministic: no iterative solver, no random state.
     """
     x_std = _as_matrix(x_std)
     y = np.asarray(y, dtype=np.float64).reshape(-1)
@@ -63,10 +67,11 @@ def fit_ridge(x_std: np.ndarray, y: np.ndarray, alpha: float) -> np.ndarray:
     if alpha < 0.0:
         raise ModelError("alpha must be non-negative")
 
+    x_centred = x_std - x_std.mean(axis=0)
     y_centred = y - y.mean()
     n_features = x_std.shape[1]
-    gram = x_std.T @ x_std + alpha * np.eye(n_features)
-    rhs = x_std.T @ y_centred
+    gram = x_centred.T @ x_centred + alpha * np.eye(n_features)
+    rhs = x_centred.T @ y_centred
     try:
         beta = np.linalg.solve(gram, rhs)
     except np.linalg.LinAlgError as exc:  # pragma: no cover - alpha>0 keeps gram SPD
