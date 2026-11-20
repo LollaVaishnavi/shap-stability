@@ -1,0 +1,28 @@
+{
+  "segments": [
+    {
+      "cmd": "shapstab --quiet",
+      "output": "verdict: UNSTABLE",
+      "exit": 2,
+      "duration_ms": 707
+    },
+    {
+      "cmd": "shapstab --top-k 6",
+      "output": "verdict: UNSTABLE\nA top boundary is a coin flip, a reversal, or holds too weakly to trust.\n\njudged depth: top 6   resamples: 500   confidence: 0.95\nresolution floor: 0.045 (smallest dominance gap this budget can resolve)\nof the single-fit top 6, 0 keep their exact rank in >= 95% of resamples\nthe exact single-fit top 6 order recurs in 21.2% of resamples; the same set in 100.0%\n\nadjacent boundaries inside the judged depth:\n   upper > lower      dominance        95% interval  status\n     x01 > x00            0.890      [0.860, 0.915]  weak\n     x00 > x02            0.832      [0.797, 0.862]  weak\n     x02 > x04            0.596      [0.552, 0.638]  weak\n     x04 > x03            0.908      [0.879, 0.930]  weak\n     x03 > x05            0.662      [0.619, 0.702]  weak\n\nper-feature rank interval (single-fit rank -> where the rank actually lands):\n     x01  single  1  median  1.0  interval [ 1,  2]  keeps rank 89.0%\n     x00  single  2  median  2.0  interval [ 1,  6]  keeps rank 68.8%\n     x02  single  3  median  3.0  interval [ 2,  5]  keeps rank 47.8%\n     x04  single  4  median  4.0  interval [ 2,  5]  keeps rank 49.0%\n     x03  single  5  median  5.0  interval [ 3,  6]  keeps rank 50.6%\n     x05  single  6  median  6.0  interval [ 5,  6]  keeps rank 64.0%\n     x06  single  7  median  7.0  interval [ 7,  7]  keeps rank 100.0%\n     x07  single  8  median  8.0  interval [ 8,  8]  keeps rank 99.4%\n     x08  single  9  median 10.0  interval [ 9, 12]  keeps rank 48.0%\n     x09  single 10  median 10.0  interval [ 9, 12]  keeps rank 38.0%\n     x10  single 11  median 11.0  interval [ 9, 12]  keeps rank 48.0%\n     x11  single 12  median 12.0  interval [10, 12]  keeps rank 74.0%",
+      "exit": 2,
+      "duration_ms": 863
+    },
+    {
+      "cmd": "python experiments/exp04_null_calibration.py",
+      "output": "Two genuinely tied features, over 300 independent datasets\nmetric                                                    value         \n--------------------------------------------------------  --------------\nsingle fit names feature 0 the winner (across datasets)   51.7%         \n95% interval on that rate                                 [0.460, 0.573]\ninterval brackets a coin flip (0.5)                       True          \nwithin one dataset, bootstrap is confident (40 datasets)  18%           ",
+      "exit": 0,
+      "duration_ms": 1473
+    },
+    {
+      "cmd": "python tools/check_numbers.py",
+      "output": "ok: 17 anchored figures verified across 2 document(s); 40 reverse-check warning(s)\nwarning: README.md: number '4' matches no metric\nwarning: README.md: number '12' matches no metric\nwarning: README.md: number '95' matches no metric\nwarning: README.md: number '3.11' matches no metric\nwarning: README.md: number '90' matches no metric\nwarning: README.md: number '90' matches no metric\nwarning: README.md: number '0.5' matches no metric\nwarning: README.md: number '0.5' matches no metric\nwarning: README.md: number '54' matches no metric\nwarning: README.md: number '003' matches no metric\nwarning: README.md: number '95' matches no metric\nwarning: README.md: number '50' matches no metric\nwarning: README.md: number '1000' matches no metric\nwarning: README.md: number '300' matches no metric\nwarning: README.md: number '95' matches no metric\nwarning: README.md: number '0.460' matches no metric\nwarning: README.md: number '0.573' matches no metric\nwarning: README.md: number '4' matches no metric\nwarning: README.md: number '004' matches no metric\nwarning: README.md: number '0.9725' matches no metric\nwarning: README.md: number '0.9729' matches no metric\nwarning: README.md: number '8' matches no metric\nwarning: README.md: number '004' matches no metric\nwarning: README.md: number '4' matches no metric\nwarning: README.md: number '8' matches no metric\nwarning: README.md: number '001' matches no metric\nwarning: README.md: number '002' matches no metric\nwarning: README.md: number '003' matches no metric\nwarning: README.md: number '004' matches no metric\nwarning: README.md: number '4' matches no metric\nwarning: docs/adr/ADR-003-dominance-and-resolution-floor.md: number '003' matches no metric\nwarning: docs/adr/ADR-003-dominance-and-resolution-floor.md: number '90' matches no metric\nwarning: docs/adr/ADR-003-dominance-and-resolution-floor.md: number '0.5' matches no metric\nwarning: docs/adr/ADR-003-dominance-and-resolution-floor.md: number '0.5' matches no metric\nwarning: docs/adr/ADR-003-dominance-and-resolution-floor.md: number '0.5' matches no metric\nwarning: docs/adr/ADR-003-dominance-and-resolution-floor.md: number '0.5' matches no metric\nwarning: docs/adr/ADR-003-dominance-and-resolution-floor.md: number '0.5' matches no metric\nwarning: docs/adr/ADR-003-dominance-and-resolution-floor.md: number '0.54' matches no metric\nwarning: docs/adr/ADR-003-dominance-and-resolution-floor.md: number '54' matches no metric\nwarning: docs/adr/ADR-003-dominance-and-resolution-floor.md: number '46' matches no metric",
+      "exit": 0,
+      "duration_ms": 31
+    }
+  ]
+}

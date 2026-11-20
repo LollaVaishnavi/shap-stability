@@ -1,0 +1,9 @@
+{
+  "output": "docs/screenshots/report.png",
+  "source_report": "built from policy.toml",
+  "badge": {
+    "colour": "rgb(255, 255, 255)",
+    "background": "rgb(177, 25, 25)",
+    "visible": true
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "source": "README.md ```mermaid-source",
+  "output": "docs/diagrams/architecture.svg",
+  "html_labels": false,
+  "background": "white"
+}
